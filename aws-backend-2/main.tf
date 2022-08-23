@@ -1,5 +1,5 @@
 terraform {
-    #this block stays commented till apply, after apply hit init to initiazlize backend
+    # this block stays commented till apply, after apply hit init to initiazlize backend
   backend "s3" {
     bucket         = "nilabh-bucket-1" 
     key            = "aws-backend/terraform.tfstate"

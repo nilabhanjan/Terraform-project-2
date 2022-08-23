@@ -17,7 +17,31 @@ terraform {
   }
 }
 
+#variables decleration
+variable "subnet_prefix" {
+    description = "cidr block for subnet"
+}
 
+variable "ec2_size" {
+  description = "type of ec2 instance"
+  default = "t2.micro"
+}
+
+variable "ssh_key" {
+  description = "key for connection"
+}
+
+variable "ami_code" {
+  description = "ami code of the instance"
+  
+}
+
+variable "cidr_block" {
+  description = "cidr block for vpc"
+  
+}
+
+#resoorces decleration
 
 provider "aws" {
     region = "us-east-1"
@@ -26,7 +50,7 @@ provider "aws" {
 
 
 resource "aws_vpc" "prod-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.cidr_block
   tags ={
     Name ="production"
   }
@@ -56,10 +80,7 @@ resource "aws_route_table" "prod-route-table" {
   }
 }
 
-variable "subnet_prefix" {
-    description = "cidr block for subnet"
-  
-}
+
 
 resource "aws_subnet" "subnet-1" {
     vpc_id = aws_vpc.prod-vpc.id
@@ -138,10 +159,10 @@ resource "aws_eip" "one" {
 
 
 resource "aws_instance" "web-server-instance" {
-    ami = "ami-052efd3df9dad4825"
-    instance_type = "t2.micro"
+    ami = var.ami_code
+    instance_type = var.ec2_size
     availability_zone = "us-east-1a"
-    key_name = "main-key"
+    key_name = var.ssh_key
 
     network_interface {
       device_index = 0
