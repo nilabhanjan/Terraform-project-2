@@ -1,3 +1,24 @@
+terraform {
+  # Assumes s3 bucket and dynamo DB table already set up in aws-backend
+ 
+  backend "s3" {
+    bucket         = "nilabh-bucket-1"
+    key            = "Terraform project 2/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-state-locking"
+    encrypt        = true
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      
+    }
+  }
+}
+
+
+
 provider "aws" {
     region = "us-east-1"
   
